@@ -219,7 +219,7 @@ const FarmerProfile = () => {
   return (
     <>
       <Toaster />
-      <Image src={logo} className="w-20 mx-auto py-10" />
+      <Image src={logo} className="w-20 mx-auto py-10" alt="image" />
       <form
         onSubmit={handleSubmit}
         className="space-y-4 p-4 w-full md:px-20 px-5 my-10"
@@ -228,8 +228,10 @@ const FarmerProfile = () => {
           <div className="grid md:grid-cols-2 items-center">
             <div>
               <p>Step 1 of 3</p>
-              <h3 className="mb-5 font-bold text-3xl">Let’s get to know you</h3>
-              <Image src={step1} className="w-3/4" />
+              <h3 className="mb-5 font-bold text-3xl">
+                Let&apos;s get to know you
+              </h3>
+              <Image src={step1} className="w-3/4" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div>
@@ -343,12 +345,12 @@ const FarmerProfile = () => {
               <h3 className="mb-5 font-bold text-3xl">
                 License & Verification
               </h3>
-              <Image src={document} className="w-3/4" />
+              <Image src={document} className="w-3/4" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div className="flex flex-col space-y-2">
                 <label htmlFor="drivers_license_number" className="form-label">
-                  Driver's License Number
+                  Driver&apos;s License Number
                 </label>
                 <input
                   type="text"
@@ -367,7 +369,7 @@ const FarmerProfile = () => {
                     htmlFor="drivers_license_photo"
                     className="form-label pb-2"
                   >
-                    Driver's License Photo
+                    Driver&apos;s License Photo
                   </label>
                   {uploadStep === 1 && (
                     <div className="bg-[#c4eec8] h-40 flex items-center justify-center rounded-2xl border-2 border-primary border-dashed">
@@ -399,7 +401,7 @@ const FarmerProfile = () => {
                     {formData.documents.drivers_license_photo ? (
                       <p>File Uploaded</p>
                     ) : (
-                      <p>Upload Driver's License Photo</p>
+                      <p>Upload Driver&apos;s License Photo</p>
                     )}
                   </div>
                 )}

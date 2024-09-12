@@ -91,7 +91,7 @@ const Register = () => {
       <section className="md:grid grid-cols-2 py-10 md:pl-20 px-5 relative pt-10 items-center">
         <div className="text-center md:max-w-lg">
           <div className="">
-            <Image src={logo} className="w-20 mx-auto mb-10" />
+            <Image src={logo} className="w-20 mx-auto mb-10" alt="image" />
             <h3 className="font-bold md:text-3xl text-2xl">Join Farm Riders</h3>
             <p className="text-sm">Please enter your details</p>
           </div>
@@ -226,7 +226,7 @@ const Register = () => {
           </div>
         </div>
         <div className="md:block hidden">
-          <Image src={register} className="" />
+          <Image src={register} className="" alt="image" />
         </div>
       </section>
     </>

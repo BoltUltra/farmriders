@@ -117,7 +117,7 @@ const Login = () => {
       <section className="md:grid grid-cols-2 py-10 md:pl-20 px-5 relative pt-10 items-center">
         <div className="text-center md:max-w-lg w-full">
           <div className="">
-            <Image src={logo} className="w-20 mx-auto mb-10" />
+            <Image src={logo} className="w-20 mx-auto mb-10" alt="image" />
             <h3 className="font-bold md:text-3xl text-2xl">
               Login to Farm Riders
             </h3>
@@ -206,7 +206,7 @@ const Login = () => {
             </div>
 
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/auth/sign-up"
                 className="underline underline-offset-4"
@@ -217,7 +217,7 @@ const Login = () => {
           </div>
         </div>
         <div className="md:block hidden">
-          <Image src={login} className="" />
+          <Image src={login} className="" alt="image" />
         </div>
       </section>
     </>
