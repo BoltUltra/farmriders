@@ -1,0 +1,66 @@
+- .env.local
+- .eslintrc.json
+- .gitignore
+- app
+  - auth
+    - forgot-password
+      - page.js
+    - login
+      - page.js
+    - sign-up
+      - page.js
+  - components
+    - ForgotPassword.jsx
+    - Home.jsx
+    - index.js
+    - Login.jsx
+    - Register.jsx
+  - dashboard
+    - page.js
+  - favicon.ico
+  - fonts
+    - GeistMonoVF.woff
+    - GeistVF.woff
+  - globals.css
+  - layout.js
+  - page.js
+  - public
+    - fonts
+    - images
+      - gif
+      - webp
+        - forgot-password.webp
+        - home.webp
+        - index.js
+        - login.webp
+        - otp.webp
+        - register.jpg
+        - signup.webp
+        - step-1.webp
+        - step2.webp
+        - success.webp
+  - services
+    - authService.js
+- jsconfig.json
+- next.config.mjs
+- package-lock.json
+- package.json
+- postcss.config.mjs
+- project_structure.text
+- public
+  - fonts
+  - images
+    - svg
+    - webp
+      - forgot-password.webp
+      - home.webp
+      - index.js
+      - login.webp
+      - logo.webp
+      - otp.webp
+      - signup.webp
+      - step-1.webp
+      - step2.webp
+      - success.webp
+- README.md
+- tailwind.config.js
