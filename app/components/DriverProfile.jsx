@@ -288,7 +288,7 @@ const Profile = () => {
             <div>
               <p>Step 1 of 3</p>
               <h3 className="mb-5 font-bold text-3xl">Let’s get to know you</h3>
-              <Image src={step1} className="w-3/4" alt="image" />
+              <Image src={step1} className="w-3/4 md:block hidden" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div>
@@ -400,7 +400,7 @@ const Profile = () => {
             <div>
               <p>Step 2 of 3</p>
               <h3 className="mb-5 font-bold text-3xl">Vehicle Details</h3>
-              <Image src={vehicle} className="w-3/4" alt="image" />
+              <Image src={vehicle} className="w-3/4 md:block hidden" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div className="flex items-center space-x-2">
@@ -575,7 +575,7 @@ const Profile = () => {
               <h3 className="mb-5 font-bold text-3xl">
                 License & Verification
               </h3>
-              <Image src={document} className="w-3/4" alt="image" />
+              <Image src={document} className="w-3/4 md:block hidden" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div className="flex flex-col space-y-2">
