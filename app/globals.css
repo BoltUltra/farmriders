@@ -94,3 +94,35 @@
     transform: rotate(-360deg);
   }
 }
+
+
+/* custom scrollbar */
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  /* For Firefox */
+  scrollbar-color: #3db24a transparent;
+  /* Thumb color and no track background */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+  /* Set scrollbar width to 2px */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  /* Remove track background */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3db24a;
+  /* Scrollbar thumb color */
+  border-radius: 10px;
+  /* Rounded corners for thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+  /* Hide the up/down buttons */
+}

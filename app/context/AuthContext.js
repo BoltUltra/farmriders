@@ -15,10 +15,30 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const currentUser = localStorage.getItem("currentUser");
 
-    if (token) {
-      setIsAuthenticated(true);
-      router.push("/dashboard");
+    if (token && currentUser) {
+      const parsedUser = JSON.parse(currentUser);
+
+      if (parsedUser.has_completed_profile) {
+        setIsAuthenticated(true);
+
+        if (parsedUser.role === "driver") {
+          router.push("/dashboard/driver");
+        } else if (parsedUser.role === "farmers") {
+          router.push("/dashboard/farmer");
+        } else if (parsedUser.role === "aggregator") {
+          router.push("/dashboard/farmer");
+        }
+      } else {
+        if (parsedUser.role === "driver") {
+          router.push("/complete-profile/driver");
+        } else if (parsedUser.role === "farmer") {
+          router.push("/complete-profile/farmer");
+        } else if (parsedUser.role === "aggregator") {
+          router.push("/complete-profile/farmer");
+        }
+      }
     } else {
       setIsAuthenticated(false);
       router.push("/auth/login");

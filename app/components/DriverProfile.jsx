@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { z } from "zod";
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -8,10 +8,10 @@ import { CloudinaryUploadWidget } from ".";
 import Image from "next/image";
 import { document, step1, step2, vehicle } from "../public/images/webp";
 import { logo } from "@/public/images/webp";
-import { driverProfileUpdate } from "../services/dataService";
+import { driverProfileUpdate, fetchVehicles } from "../services/dataService";
 import { useRouter } from "next/navigation";
 
-// Updated validation schema
+// Form Validation
 const profileSchema = z.object({
   firstname: z.string().min(1, "First name is required"),
   lastname: z.string().min(1, "Last name is required"),
@@ -20,7 +20,6 @@ const profileSchema = z.object({
   }),
   nin: z.string().length(11, "NIN must be 11 digits"),
   drivers_license_number: z.string(),
-  // .length(20, "Driver's license number must be 20 digits"),
   documents: z.object({
     selfie_photo: z.string().url().optional(),
     nin_photo: z.string().url().optional(),
@@ -32,7 +31,7 @@ const profileSchema = z.object({
     .object({
       plate_number: z.string().optional(),
       vehicle_year: z.string().optional(),
-      manufacturer_model: z.string().optional(),
+      vehicle: z.string().optional(),
       vehicle_color: z.string().optional(),
       proof_of_ownership: z.string().url().optional(),
     })
@@ -58,7 +57,7 @@ const step2Schema = z.object({
     .object({
       plate_number: z.string().optional(),
       vehicle_year: z.string().optional(),
-      manufacturer_model: z.string().optional(),
+      vehicle: z.string().optional(),
       vehicle_color: z.string().optional(),
     })
     .optional(),
@@ -66,7 +65,6 @@ const step2Schema = z.object({
 
 const step3Schema = z.object({
   drivers_license_number: z.string(),
-  // .length(20, "Driver's license number must be 20 digits"),
   documents: z.object({
     nin_photo: z.string().url().optional(),
     drivers_license_photo: z.string().url().optional(),
@@ -84,9 +82,11 @@ const Profile = () => {
   const [uploadPreset] = useState("aoh4fpwm");
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [vehicleData, setVehicleData] = useState([])
 
   const router = useRouter();
 
+  // Form Data
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -103,22 +103,18 @@ const Profile = () => {
     vehicle_info: {
       plate_number: "",
       vehicle_year: "",
-      manufacturer_model: "",
+      vehicle: "",
       vehicle_color: "",
       proof_of_ownership: "",
     },
   });
 
+  // Image upload
   const [uploadState, setUploadState] = useState({
     selfie_photoUploaded: false,
     nin_photoUploaded: false,
     drivers_license_photoUploaded: false,
     proof_of_ownershipUploaded: false,
-  });
-
-  const [uwConfig] = useState({
-    cloudName,
-    uploadPreset,
   });
 
   const cld = new Cloudinary({
@@ -134,7 +130,6 @@ const Profile = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "file") {
-      // No longer handling file changes directly
     } else if (name === "has_vehicle") {
       setShowVehicleInfo(checked);
       setFormData((prevState) => ({
@@ -149,6 +144,22 @@ const Profile = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    const fetchAllVehicles = async () => {
+      try {
+        const response = await fetchVehicles();
+        setVehicleData(response.data.vehicles);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllVehicles();
+  }, []);
+
 
   const [uploadStep, setUploadStep] = useState(0);
 
@@ -211,6 +222,7 @@ const Profile = () => {
     setCurrentStep((prev) => prev - 1);
   };
 
+  // On form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -239,7 +251,7 @@ const Profile = () => {
       vehicle_info: {
         plate_number: formData.vehicle_info.plate_number,
         vehicle_year: formData.vehicle_info.vehicle_year,
-        manufacturer_model: formData.vehicle_info.manufacturer_model,
+        vehicle: formData.vehicle_info.vehicle,
         vehicle_color: formData.vehicle_info.vehicle_color,
         proof_of_ownership: formData.vehicle_info.proof_of_ownership,
       },
@@ -255,16 +267,12 @@ const Profile = () => {
       toast.success("Profile Updated!");
       localStorage.clear();
       router.push("/auth/login");
-      // router.push("/dashboard/dash");
     } catch (error) {
       console.error("Profile Update failed:", error);
-      toast.error("An error occurred. Please try again.");
+      // toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
-    // // Log form data to console
-    // console.log("Form data:", credentials);
-    // toast.success("Form data logged to console");
   };
 
   return (
@@ -466,29 +474,74 @@ const Profile = () => {
                   }
                 />
               </div>
-
+              {/* 
               <div className="flex flex-col space-y-2">
-                <label htmlFor="manufacturer_model" className="form-label">
+                <label htmlFor="vehicle" className="form-label">
                   Manufacturer & Model
                 </label>
                 <input
                   type="text"
-                  name="manufacturer_model"
-                  id="manufacturer_model"
+                  name="vehicle"
+                  id="vehicle"
                   className="form-input"
                   placeholder="Manufacturer & Model"
-                  value={formData.vehicle_info.manufacturer_model || ""}
+                  value={formData.vehicle_info.vehicle || ""}
                   onChange={(e) =>
                     setFormData((prevState) => ({
                       ...prevState,
                       vehicle_info: {
                         ...prevState.vehicle_info,
-                        manufacturer_model: e.target.value,
+                        vehicle: e.target.value,
                       },
                     }))
                   }
                 />
+              </div> */}
+              <div className="flex flex-col space-y-2">
+                <label htmlFor="vehicle" className="form-label">
+                  Select Vehicle
+                </label>
+                <select
+                  name="vehicle"
+                  id="vehicle"
+                  className="form-input"
+                  value={formData.vehicle_info.vehicle}
+                  onChange={(e) =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      vehicle_info: {
+                        ...prevState.vehicle_info,
+                        vehicle: e.target.value, // Store selected vehicle ID
+                      },
+                    }))
+                  }
+                >
+                  <option value="">Select Vehicle</option>
+                  {vehicleData.map((vehicle) => (
+                    <option key={vehicle._id} value={vehicle._id}>
+                      {vehicle.name} - ${vehicle.price}
+                    </option>
+                  ))}
+                </select>
+
+                {formData.vehicle_info.vehicle && (
+                  <div className="mt-4">
+                    <h4>Selected Vehicle</h4>
+                    {vehicleData
+                      .filter((v) => v._id === formData.vehicle_info.vehicle)
+                      .map((v) => (
+                        <div key={v._id} className="flex items-center space-x-2">
+                          <div className='flex items-center space-x-2'>
+                            <Image src={v.image_url} alt={v.name} width={50} height={50} />
+                            <p>{v.name}</p>
+                          </div>
+                          <p>${v.price}</p>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
+
 
               <div className="flex flex-col space-y-2">
                 <label htmlFor="vehicle_color" className="form-label">
@@ -682,22 +735,20 @@ const Profile = () => {
               <button
                 type="button"
                 onClick={handleNextStep}
-                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${
-                  isLoading
-                    ? "opacity-50 cursor-not-allowed flex items-center justify-center"
-                    : ""
-                }`}
+                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${isLoading
+                  ? "opacity-50 cursor-not-allowed flex items-center justify-center"
+                  : ""
+                  }`}
               >
                 {isLoading ? <div class="loader"></div> : "Next"}
               </button>
             ) : (
               <button
                 type="submit"
-                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${
-                  isLoading
-                    ? "opacity-50 cursor-not-allowed flex items-center justify-center"
-                    : ""
-                }`}
+                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${isLoading
+                  ? "opacity-50 cursor-not-allowed flex items-center justify-center"
+                  : ""
+                  }`}
                 disabled={isLoading}
               >
                 {isLoading ? <div class="loader"></div> : "Submit"}

@@ -63,7 +63,7 @@ const Login = () => {
           currentUser.role === "driver" && // Driver Check
           currentUser.has_completed_profile
         ) {
-          router.push("/dashboard");
+          router.push("/dashboard/driver");
           toast.success("Login successful!");
         } else if (
           currentUser.role === "driver" &&
@@ -74,7 +74,7 @@ const Login = () => {
           currentUser.role === "farmers" && //Farmer Check
           currentUser.has_completed_profile
         ) {
-          router.push("/dashboard");
+          router.push("/dashboard/farmer");
           toast.success("Login successful!");
         } else if (
           currentUser.role === "farmers" &&
@@ -85,7 +85,7 @@ const Login = () => {
           currentUser.role === "aggregator" && //Aggregator Check
           currentUser.has_completed_profile
         ) {
-          router.push("/dashboard");
+          router.push("/dashboard/farmer");
           toast.success("Login successful!");
         } else if (
           currentUser.role === "aggregator" &&
@@ -94,14 +94,14 @@ const Login = () => {
           router.push("/complete-profile/farmer");
         }
 
-        toast.success("Login successful!");
+        // toast.success("Login successful!");
       } else {
-        toast.error("Login failed.");
+        // toast.error("Login failed.");
       }
-      toast.success("Login successful!");
+      // toast.success("Login successful!");
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error("An error occurred. Please try again.");
+      // toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -187,11 +187,10 @@ const Login = () => {
             </Link>
             <button
               type="submit"
-              className={`text-white bg-primary w-full py-3 rounded-lg ${
-                isLoading
-                  ? "opacity-50 cursor-not-allowed flex items-center justify-center"
-                  : ""
-              }`}
+              className={`text-white bg-primary w-full py-3 rounded-lg ${isLoading
+                ? "opacity-50 cursor-not-allowed flex items-center justify-center"
+                : ""
+                }`}
               disabled={isLoading}
             >
               {isLoading ? <div class="loader"></div> : "Login"}

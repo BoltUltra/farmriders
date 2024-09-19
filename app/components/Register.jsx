@@ -70,12 +70,58 @@ const Register = () => {
 
     try {
       const data = await registerUser(credentials);
-      console.log("Registration successful:", data);
-      toast.success("Registration successful!");
-      router.push("/auth/login");
+      console.log(
+        "Registration successful:",
+        data.success,
+        data.data.user.role,
+        data.data.user.token
+      );
+
+      if (data.success && data.data.user.token) {
+        localStorage.setItem("token", data.data.user.token);
+        localStorage.setItem("currentUser", JSON.stringify(data.data.user));
+
+        const currentUser = data.data.user;
+
+        if (
+          currentUser.role === "driver" && // Driver Check
+          currentUser.has_completed_profile
+        ) {
+          router.push("/dashboard");
+          toast.success("Login successful!");
+        } else if (
+          currentUser.role === "driver" &&
+          !currentUser.has_completed_profile
+        ) {
+          router.push("/complete-profile/driver");
+        } else if (
+          currentUser.role === "farmers" && //Farmer Check
+          currentUser.has_completed_profile
+        ) {
+          router.push("/dashboard");
+          toast.success("Login successful!");
+        } else if (
+          currentUser.role === "farmers" &&
+          !currentUser.has_completed_profile
+        ) {
+          router.push("/complete-profile/farmer");
+        } else if (
+          currentUser.role === "aggregator" && //Aggregator Check
+          currentUser.has_completed_profile
+        ) {
+          router.push("/dashboard");
+          toast.success("Login successful!");
+        } else if (
+          currentUser.role === "aggregator" &&
+          !currentUser.has_completed_profile
+        ) {
+          router.push("/complete-profile/farmer");
+        }
+      } else {
+        toast.error("Login failed.");
+      }
     } catch (error) {
       console.error("Registration failed:", error);
-      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

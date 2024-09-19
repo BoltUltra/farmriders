@@ -15,6 +15,7 @@ export async function registerUser(credentials) {
       }
     );
     return response.data;
+    toast.success("Registration successful");
   } catch (error) {
     console.error("Registration failed:", error.response.data.message);
     toast.error(error.response.data.message);
@@ -34,6 +35,7 @@ export async function loginUser(credentials) {
       }
     );
     return response.data;
+    toast.success("Login successful");
   } catch (error) {
     console.error("Login failed:", error);
     toast.error(error.response.data.message);

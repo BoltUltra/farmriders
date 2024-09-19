@@ -52,3 +52,21 @@ export async function farmersProfileUpdate(credentials) {
     throw new Error("Profile Update failed");
   }
 }
+
+export async function fetchVehicles() {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vehicles/`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch Vehicles:",
+      error.response?.data?.message || error.message
+    );
+    toast.error(error.response?.data?.message || "Failed to fetch vehicles");
+    throw new Error("Unable to fetch vehicles");
+  }
+}

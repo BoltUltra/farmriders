@@ -14,7 +14,6 @@ import {
 } from "../services/dataService";
 import { useRouter } from "next/navigation";
 
-// Updated validation schema
 const profileSchema = z.object({
   firstname: z.string().min(1, "First name is required"),
   lastname: z.string().min(1, "Last name is required"),
@@ -96,7 +95,6 @@ const FarmerProfile = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "file") {
-      // No longer handling file changes directly
     } else if (name === "has_vehicle") {
       setShowVehicleInfo(checked);
       setFormData((prevState) => ({
@@ -120,7 +118,6 @@ const FarmerProfile = () => {
       const updatedState = { ...prevState };
       let current = updatedState;
 
-      // Navigate to the correct nested object
       for (let i = 0; i < keys.length - 1; i++) {
         const key = keys[i];
         if (!current[key]) {
@@ -129,19 +126,16 @@ const FarmerProfile = () => {
         current = current[key];
       }
 
-      // Set the URL at the correct field
       current[keys[keys.length - 1]] = url;
 
       return updatedState;
     });
 
-    // Update upload state
     setUploadState((prevState) => ({
       ...prevState,
       [`${path.replace(/\./g, "_")}_Uploaded`]: true,
     }));
 
-    // Move to the next upload step
     setUploadStep(uploadStep + 1);
     toast.success("File uploaded successfully");
   };
@@ -163,7 +157,6 @@ const FarmerProfile = () => {
       return;
     }
 
-    // Move to the next step if validation passes
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -174,7 +167,6 @@ const FarmerProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form data
     const validationResult = profileSchema.safeParse(formData);
     if (!validationResult.success) {
       validationResult.error.errors.forEach((error) => {
@@ -204,16 +196,12 @@ const FarmerProfile = () => {
       toast.success("Profile Updated!");
       localStorage.clear();
       router.push("/auth/login");
-      // router.push("/dashboard/dash");
     } catch (error) {
       console.error("Profile Update failed:", error);
       toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
-    // // Log form data to console
-    // console.log("Form data:", credentials);
-    // toast.success("Form data logged to console");
   };
 
   return (
@@ -227,11 +215,11 @@ const FarmerProfile = () => {
         {currentStep === 1 && (
           <div className="grid md:grid-cols-2 items-center">
             <div>
-              <p>Step 1 of 3</p>
+              <p>Step 1 of 2</p>
               <h3 className="mb-5 font-bold text-3xl">
                 Let&apos;s get to know you
               </h3>
-              <Image src={step1} className="w-3/4" alt="image" />
+              <Image src={step1} className="w-3/4 md:block hidden" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div>
@@ -341,11 +329,11 @@ const FarmerProfile = () => {
         {currentStep === 2 && (
           <div className="grid md:grid-cols-2 items-center">
             <div>
-              <p>Step 3 of 3</p>
+              <p>Step 2 of 2</p>
               <h3 className="mb-5 font-bold text-3xl">
                 License & Verification
               </h3>
-              <Image src={document} className="w-3/4" alt="image" />
+              <Image src={document} className="w-3/4 md:block hidden" alt="image" />
             </div>
             <div className="md:px-20 space-y-5">
               <div className="flex flex-col space-y-2">
@@ -461,22 +449,20 @@ const FarmerProfile = () => {
               <button
                 type="button"
                 onClick={handleNextStep}
-                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${
-                  isLoading
-                    ? "opacity-50 cursor-not-allowed flex items-center justify-center"
-                    : ""
-                }`}
+                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${isLoading
+                  ? "opacity-50 cursor-not-allowed flex items-center justify-center"
+                  : ""
+                  }`}
               >
                 {isLoading ? <div class="loader"></div> : "Next"}
               </button>
             ) : (
               <button
                 type="submit"
-                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${
-                  isLoading
-                    ? "opacity-50 cursor-not-allowed flex items-center justify-center"
-                    : ""
-                }`}
+                className={`bg-green-500 text-white px-4 py-3 rounded w-full ${isLoading
+                  ? "opacity-50 cursor-not-allowed flex items-center justify-center"
+                  : ""
+                  }`}
                 disabled={isLoading}
               >
                 {isLoading ? <div class="loader"></div> : "Submit"}
